@@ -225,10 +225,15 @@
     (if (some? data)
       (create_directory_and_save_file directory filename data))))
 
+(defn remove_nil_urls
+  [urls]
+  (filter some? urls))
+
 (defn fetch_and_save_word
   [word directory]
   (let [response (fetch_word word)
-        urls (parse_response response)]
+        urls (parse_response response)
+        non_nil_urls (remove_nil_urls urls)]
     (doseq
         [url urls]
       (fetch_and_save_url url directory))))
