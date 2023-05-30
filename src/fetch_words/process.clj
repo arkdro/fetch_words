@@ -48,8 +48,8 @@
   (str/split data_item SPACE_REGEX))
 
 (defn extract_words_from_items
-  [data_items]
-  (map extract_words_from_one_item data_items))
+  [payload_items]
+  (map extract_words_from_one_item payload_items))
 
 (defn get_lines
   [filename]
