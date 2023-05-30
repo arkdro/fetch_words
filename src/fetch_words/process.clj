@@ -12,6 +12,13 @@
 (def SPACE_REGEX #"\s+")
 (def BEGINNING_REGEX #"^[^(]+\(")
 (def ENDING_REGEX #"\)[^)]+$")
+(def BEGIN_BODY_BLOCK #"<[^<>]+\bclass=\"dwdswb-artikel\"[^<>]*>")
+(def END_BODY_BLOCK #"<[^<>]+\bid=\"relation-block[^<>]+>")
+(def BEGIN_AUDIO #"<audio>")
+(def END_AUDIO #"</audio>")
+(def AUDIO_TAG_REGEX #"<source\b[^<>]+\btype=\"audio\b[^<>]+>")
+(def AUDIO_LINK_REGEX_BEGIN #"\bsrc=\"")
+(def AUDIO_LINK_REGEX_END #"\">")
 
 (defn build_word_groups_of_one_phrase
   "Currently no word groups. Only the original words and the whole sentence."
@@ -95,13 +102,54 @@
     (catch Exception e
       (error e "exception for word:" word))))
 
-(defn parse_response
+(defn extract_by_begin_and_end_regex
+  [text begin_regex end_regex]
+  (let [[_ ending_text] (str/split text begin_regex)]
+    (if (some? ending_text)
+      (first (str/split ending_text end_regex)))))
+
+(defn extract_body_part
+  [body]
+  (extract_by_begin_and_end_regex body BEGIN_BODY_BLOCK END_BODY_BLOCK))
+
+(defn extract_audio_url
+  [text]
+  (let [audio_block (extract_by_begin_and_end_regex body BEGIN_AUDIO END_AUDIO)
+        audio_source_tag (re-find AUDIO_TAG_REGEX audio_block)
+        audio_url (extract_by_begin_and_end_regex
+                   body
+                   AUDIO_LINK_REGEX_BEGIN
+                   AUDIO_LINK_REGEX_END)]
+    audio_url))
+
+(defn parse_multiple_tab_response
   [response]
   (throw (RuntimeException. "not implemented"))
   ;; handle multiple values (e.g. Kiefer). Check for 'tablist'
-  {:word ""
-   :url ""}
+  [{:word ""
+    :url ""}]
   )
+
+(defn parse_single_tab_response
+  [{body :body}]
+  (throw (RuntimeException. "not implemented"))
+  (let [
+        info_part (extract_body_part body)
+        audio_url (extract_audio_url info_part)
+        ]
+    )
+  )
+
+(defn single_tab?
+  [response]
+  (throw (RuntimeException. "not implemented"))
+  )
+
+(defn parse_response
+  [response]
+  (if (single_tab? response)
+    (parse_single_tab_response response)
+    (parse_multiple_tab_response response)))
 
 (defn fetch_and_save_word
   [word full_out_dir]
