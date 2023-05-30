@@ -51,11 +51,17 @@
   [data_items]
   (map extract_words_from_one_item data_items))
 
+(defn get_lines
+  [filename]
+  (->> filename
+       slurp
+       str/split-lines))
+
 (defn read_word_list
   [wordlist]
   (let [
-        whole_content (slurp wordlist)
-        data_parts (extract_data_from_whole_content whole_content)
+        lines (get_lines wordlist)
+        data_parts (extract_data_from_whole_content lines)
         payload_items (extract_payload_items data_parts)
         words (extract_words_from_items payload_items)
         word_groups (build_word_groups words)
