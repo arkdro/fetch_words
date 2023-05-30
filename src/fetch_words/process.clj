@@ -15,6 +15,7 @@
   "Take a phrase, split in words, build a list containing
   the initial phrase, the main word if it's there, the all separated words"
   [phrase]
+  (throw (RuntimeException. "not implemented"))
   (let [
         words (split_words phrase)
         ]
@@ -44,11 +45,18 @@
   [data_items]
   (map extract_one_data_item data_items))
 
+(defn extract_word_from_item
+  [data_items]
   (throw (RuntimeException. "not implemented"))
   )
 
 (defn extract_initial_phrases
   [text]
+  (throw (RuntimeException. "not implemented"))
+  )
+
+(defn extract_words_from_items
+  [data_items]
   (throw (RuntimeException. "not implemented"))
   )
 
