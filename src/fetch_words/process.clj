@@ -235,7 +235,7 @@
         urls (parse_response response)
         non_nil_urls (remove_nil_urls urls)]
     (doseq
-        [url urls]
+        [url non_nil_urls]
       (fetch_and_save_url url directory))))
 
 (defn process_one_word
