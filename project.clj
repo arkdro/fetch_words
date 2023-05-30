@@ -7,4 +7,6 @@
                  [org.clojure/tools.cli "0.3.5"]
                  [org.clojure/data.csv "1.0.1"]]
   :main ^:skip-aot fetch-words.core
-  :repl-options {:init-ns fetch-words.core})
+  :repl-options {:init-ns fetch-words.core}
+  :profiles {:dev {:resource-paths ["test/resources"]
+                   :dependencies []}})
