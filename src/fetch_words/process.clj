@@ -1,4 +1,8 @@
-(ns fetch-words.process)
+(ns fetch-words.process
+  (:require [clojure.string :as str]
+            [clojure.data.csv :as csv])
+  )
+
 
 (defn split_words
   [phrase]
