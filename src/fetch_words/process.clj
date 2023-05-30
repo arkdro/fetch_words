@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.data.csv :as csv]
             [clj-http.client :as client]
-            [clojure.tools.logging :refer [error warn]]))
+            [clojure.tools.logging :refer [error warn info]]))
 
 (def BASE_URL_DWDS "https://www.dwds.de/wb/")
 (def PAYLOAD_SEPARATOR_REGEX #"\x1f")
@@ -259,6 +259,7 @@
 
 (defn process_one_word_with_delay
   [word outdir levels delay_min delay_max]
+  (info "word:" word)
   (do_random_delay delay_min delay_max)
   (process_one_word word outdir levels))
 
