@@ -17,8 +17,7 @@
 (def BEGIN_AUDIO #"<audio>")
 (def END_AUDIO #"</audio>")
 (def AUDIO_TAG_REGEX #"<source\b[^<>]+\btype=\"audio\b[^<>]+>")
-(def AUDIO_LINK_REGEX_BEGIN #"\bsrc=\"")
-(def AUDIO_LINK_REGEX_END #"\">")
+(def AUDIO_LINK_REGEX #"(?i)\bSRC=\"([^<>\"]+)\"")
 (def TABS_SEPARATOR_REGEX #"<div[^<>]+\bid=\"start-\d+\"[^<>]*>")
 (def TABS_BEGIN_REGEX #"<main>")
 (def TABS_END_REGEX #"</main>")
@@ -117,13 +116,10 @@
 
 (defn extract_audio_url
   [text]
-  (let [audio_block (extract_by_begin_and_end_regex body BEGIN_AUDIO END_AUDIO)
+  (let [audio_block (extract_by_begin_and_end_regex text BEGIN_AUDIO END_AUDIO)
         audio_source_tag (re-find AUDIO_TAG_REGEX audio_block)
-        audio_url (extract_by_begin_and_end_regex
-                   body
-                   AUDIO_LINK_REGEX_BEGIN
-                   AUDIO_LINK_REGEX_END)]
-    audio_url))
+        audio_url (re-find AUDIO_LINK_REGEX audio_source_tag)]
+    (second audio_url)))
 
 (defn extract_audio_url_from_tab
   [text]
