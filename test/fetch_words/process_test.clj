@@ -42,3 +42,15 @@
           actual (extract_data_items_from_sql_line line)
           expected "bb, cc"]
       (is (= expected actual)))))
+
+(deftest extract_words_from_one_item_test
+  (testing "several words"
+    (let [payload "one two three"
+          actual (extract_words_from_one_item payload)
+          expected ["one" "two" "three"]]
+      (is (= expected actual))))
+  (testing "empty string"
+    (let [payload ""
+          actual (extract_words_from_one_item payload)
+          expected [""]]
+      (is (= expected actual)))))
