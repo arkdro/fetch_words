@@ -6,6 +6,8 @@
 (def SEPARATOR \;)
 (def WORD_INDEX 6)
 (def SPACE_REGEX #"\s+")
+(def BEGINNING_REGEX #"^[^(]+\(")
+(def ENDING_REGEX #"\)[^)]+$")
 
 (defn build_word_groups_of_one_phrase
   "Take a list of words, build a list containing
@@ -23,8 +25,8 @@
 
 (defn extract_data_items_from_sql_line
   [line]
-  (let [without_beginning (str/replace-first line #"^[^(]+\(" "")
-        without_ending (str/replace-first without_beginning #"\)[^)]+$" "")]
+  (let [without_beginning (str/replace-first line BEGINNING_REGEX "")
+        without_ending (str/replace-first without_beginning ENDING_REGEX "")]
     without_ending))
 
 (defn extract_data_from_whole_content
