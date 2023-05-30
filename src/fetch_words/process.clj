@@ -111,13 +111,24 @@
                     new_acc (conj acc part)]
                 (recur new_acc end (dec max_parts))))))
 
-(defn prepare_out_dir
+(defn create_out_dir
+  [dir]
+  (let [attributes (into-array java.nio.file.attribute.FileAttribute [])]
+    (java.nio.file.Files/createDirectories dir attributes)))
+
+(defn build_out_dir_name
   "Split a word into parts, join the base dir and the parts
   to build a deep nested directory name."
   [word outdir levels]
   (let [parts (split_word_into_parts word levels)
         var_arg_parts (into-array java.lang.String parts)]
     (java.nio.file.Paths/get outdir var_arg_parts)))
+
+(defn prepare_out_dir
+  [word outdir levels]
+  (let [dir (build_out_dir_name word outdir levels)
+        _ (create_out_dir dir)]
+    dir))
 
 (defn fetch_word
   [word]
@@ -191,11 +202,17 @@
       body
       (warn "no data for url:" url ", status:" status))))
 
+(defn build_directory_and_file_name
+  [word directory]
+  (.getPath (java.io.File.
+             (str directory)
+             word)))
+
 (defn build_full_filename
   [url directory]
   (let [server_path (.getPath (java.net.URL. url))
         filename (.getName (java.io.File. server_path))]
-    (.getPath (java.io.File. directory filename))))
+    (build_directory_and_file_name filename directory)))
 
 (defn fetch_and_save_url
   [url directory]
