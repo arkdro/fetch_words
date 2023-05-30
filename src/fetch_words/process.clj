@@ -34,14 +34,14 @@
   [lines]
   (map extract_data_items_from_sql_line lines))
 
-(defn extract_one_data_item
+(defn extract_payload
   [data]
   (let [words (first (csv/read-csv data :separator SEPARATOR :quote QUOTE))]
     (get words WORD_INDEX)))
 
-(defn extract_data_items
+(defn extract_payload_items
   [data_items]
-  (map extract_one_data_item data_items))
+  (map extract_payload data_items))
 
 (defn extract_words_from_one_item
   [data_item]
@@ -56,8 +56,8 @@
   (let [
         whole_content (slurp wordlist)
         data_parts (extract_data_from_whole_content whole_content)
-        data_items (extract_data_items data_parts)
-        words (extract_words_from_items data_items)
+        payload_items (extract_payload_items data_parts)
+        words (extract_words_from_items payload_items)
         word_groups (build_word_groups words)
         ]
     word_groups)
