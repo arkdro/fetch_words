@@ -19,6 +19,9 @@
 (def AUDIO_TAG_REGEX #"<source\b[^<>]+\btype=\"audio\b[^<>]+>")
 (def AUDIO_LINK_REGEX_BEGIN #"\bsrc=\"")
 (def AUDIO_LINK_REGEX_END #"\">")
+(def TABS_SEPARATOR_REGEX #"<div[^<>]+\bid=\"start-\d+\"[^<>]*>")
+(def TABS_BEGIN_REGEX #"<main>")
+(def TABS_END_REGEX #"</main>")
 
 (defn build_word_groups_of_one_phrase
   "Currently no word groups. Only the original words and the whole sentence."
@@ -127,13 +130,27 @@
   (let [info_part (extract_body_part text)]
     (extract_audio_url info_part)))
 
+(defn extract_audio_urls
+  [tabs]
+  (map extract_audio_url tabs))
+
+(defn extract_separated_tabs
+  [text]
+  (let [tabs (str/split text TABS_SEPARATOR_REGEX)]
+    (rest tabs)))
+
+(defn extract_tabs_content
+  [body]
+  (let [all_tabs_content (extract_by_begin_and_end_regex
+                          body
+                          TABS_BEGIN_REGEX
+                          TABS_END_REGEX)]
+    (extract_separated_tabs all_tabs_content)))
+
 (defn parse_multiple_tab_response
-  [response]
-  (throw (RuntimeException. "not implemented"))
-  ;; handle multiple values (e.g. Kiefer). Check for 'tablist'
-  [{:word ""
-    :url ""}]
-  )
+  [{body :body}]
+  (let [tabs (extract_tabs_content body)]
+    (extract_audio_urls tabs)))
 
 (defn parse_single_tab_response
   [{body :body}]
