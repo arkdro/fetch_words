@@ -26,7 +26,7 @@
   [phrases]
   (map build_word_groups_of_one_phrase phrases))
 
-(defn extract_data_items_from_line
+(defn extract_data_items_from_sql_line
   [line]
   (let [without_beginning (str/replace-first line #"^[^(]+\(" "")
         without_ending (str/replace-first without_beginning #"\)[^)]+$" "")]
@@ -34,7 +34,7 @@
 
 (defn extract_data_from_whole_content
   [lines]
-  (map extract_data_items_from_line lines))
+  (map extract_data_items_from_sql_line lines))
 
 (defn extract_one_data_item
   [data]
