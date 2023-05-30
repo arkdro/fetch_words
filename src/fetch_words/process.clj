@@ -45,9 +45,13 @@
   [lines]
   (map extract_data_items_from_sql_line lines))
 
+(defn split_csv_string
+  [data]
+  (csv/read-csv data :separator SEPARATOR :quote QUOTE))
+
 (defn extract_payload
   [data]
-  (let [words (first (csv/read-csv data :separator SEPARATOR :quote QUOTE))]
+  (let [words (first (split_csv_string data))]
     (get words WORD_INDEX)))
 
 (defn extract_payload_items
