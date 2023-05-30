@@ -20,3 +20,25 @@
           expected (get_resource "one_line_values_expected")
           actual (extract_payload text)]
       (is (= actual expected)))))
+
+(deftest extract_data_items_from_sql_line_test
+  (testing "empty line"
+    (let [line ""
+          actual (extract_data_items_from_sql_line line)
+          expected ""]
+      (is (= expected actual))))
+  (testing "line without ending"
+    (let [line "aa (bb,cc"
+          actual (extract_data_items_from_sql_line line)
+          expected "bb,cc"]
+      (is (= expected actual))))
+  (testing "line without beginning"
+    (let [line "bb,cc);"
+          actual (extract_data_items_from_sql_line line)
+          expected "bb,cc"]
+      (is (= expected actual))))
+  (testing "normal line"
+    (let [line "insert (bb, cc);"
+          actual (extract_data_items_from_sql_line line)
+          expected "bb, cc"]
+      (is (= expected actual)))))
