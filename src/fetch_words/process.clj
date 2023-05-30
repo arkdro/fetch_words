@@ -213,10 +213,18 @@
   (let [full_out_dir (prepare_out_dir word outdir levels)]
     (fetch_and_save_word word full_out_dir)))
 
+(defn process_one_word_set
+  "Take a set of words related to the main word,
+  process each word separately."
+  [word_set outdir levels]
+  (map
+   #(process_one_word % outdir levels)
+   word_set))
+
 (defn process_words
   [words outdir levels]
-  (doseq [word words]
-    (process_one_word word outdir levels)))
+  (doseq [word_set words]
+    (process_one_word_set word_set outdir levels)))
 
 (defn process_word_list
   [wordlist outdir levels var_arguments]
