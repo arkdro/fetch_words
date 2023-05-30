@@ -137,21 +137,22 @@
       (error e "exception for word:" word))))
 
 (defn extract_by_begin_and_end_regex
-  [text begin_regex end_regex]
+  [begin_regex end_regex text]
   (let [[_ ending_text] (str/split text begin_regex)]
     (if (some? ending_text)
       (first (str/split ending_text end_regex)))))
 
 (defn extract_body_part
   [body]
-  (extract_by_begin_and_end_regex body BEGIN_BODY_BLOCK END_BODY_BLOCK))
+  (extract_by_begin_and_end_regex BEGIN_BODY_BLOCK END_BODY_BLOCK body))
 
 (defn extract_audio_url
   [text]
-  (let [audio_block (extract_by_begin_and_end_regex text BEGIN_AUDIO END_AUDIO)
-        audio_source_tag (re-find AUDIO_TAG_REGEX audio_block)
-        audio_url (re-find AUDIO_LINK_REGEX audio_source_tag)]
-    (second audio_url)))
+  (some->> text
+           (extract_by_begin_and_end_regex BEGIN_AUDIO END_AUDIO)
+           (re-find AUDIO_TAG_REGEX)
+           (re-find AUDIO_LINK_REGEX)
+           (second)))
 
 (defn extract_audio_url_from_tab
   [text]
@@ -170,9 +171,9 @@
 (defn extract_tabs_content
   [body]
   (let [all_tabs_content (extract_by_begin_and_end_regex
-                          body
                           TABS_BEGIN_REGEX
-                          TABS_END_REGEX)]
+                          TABS_END_REGEX
+                          body)]
     (extract_separated_tabs all_tabs_content)))
 
 (defn parse_multiple_tab_response
