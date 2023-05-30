@@ -21,6 +21,7 @@
 (def TABS_SEPARATOR_REGEX #"(?i)<div[^<>]+\bid=\"start-\d+\"[^<>]*>")
 (def TABS_BEGIN_REGEX #"(?i)<main>")
 (def TABS_END_REGEX #"(?i)</main>")
+(def ONE_LEVEL_CHAR_REGEX  #"(..?)(.*)") ;; take 2 chars if possible and take the rest
 
 (defn build_word_groups_of_one_phrase
   "Currently no word groups. Only the original words and the whole sentence."
@@ -91,6 +92,19 @@
   (let [lines (get_lines wordlist)
         word_groups (process_lines lines)]
     word_groups))
+
+(defn split_word_into_parts
+  "Split a word into parts using a pre-defined regex.
+  The total number of parts in the result is less or equal to 'levels'."
+  ([word max_parts]
+   (split_word_into_parts [] word (- max_parts 2)))
+  ([acc word max_parts]
+   (cond
+     (str/blank? word) acc
+     (neg? max_parts) (conj acc word)
+     :default (let [[_ part end] (re-find ONE_LEVEL_CHAR_REGEX word)
+                    new_acc (conj acc part)]
+                (recur new_acc end (dec max_parts))))))
 
 (defn prepare_out_dir
   [word outdir levels]
