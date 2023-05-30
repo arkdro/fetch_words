@@ -16,10 +16,9 @@
                  (string? %))
                "Must be non-empty string"]]
    ["-l" "--levels N" "create N levels of output directories. Default: round(log10(wordlist size))"
-    :validate [#(and
-                 (some? %)
-                 (string? %))
-               "Must be non-empty string"]]
+    :parse-fn #(Integer/parseInt %)
+    :validate [#(< 0 %)
+               "Must be a positive integer"]]
    ;; A boolean option defaulting to nil
    ["-h" "--help"]])
 
