@@ -1,7 +1,7 @@
 (ns fetch-words.core
   (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
-            [clojure.tools.trace :as trace]
+            ;; [clojure.tools.trace :as trace]
             [fetch-words.process]))
 
 (def cli-options
@@ -36,8 +36,7 @@
 
 (defn activate_trace
   []
-  (trace/trace-ns 'fetch-words.core)
-  (trace/trace-ns 'fetch-words.process)
+  ;; (trace/trace-ns 'fetch-words.process)
   )
 
 (defn get_delay_limits

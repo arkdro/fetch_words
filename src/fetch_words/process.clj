@@ -161,8 +161,7 @@
 
 (defn extract_audio_urls
   [tabs]
-  (doall ;; for tracing
-   (map extract_audio_url tabs)))
+  (map extract_audio_url tabs))
 
 (defn extract_separated_tabs
   [text]
@@ -246,24 +245,16 @@
     (fetch_and_save_word word full_out_dir)))
 
 (defn do_non_zero_random_delay
-  [delay_min delay_max {delay_begin :delay_begin}]
+  [delay_min delay_max]
   (let [delta (- delay_max delay_min)
         random_value (rand-int delta)
         delay (+ delay_min random_value)]
-    (Thread/sleep delay)
-    {:delay_begin delay_begin ;; for tracing
-     :delay_end (java.util.Date.)
-     :delay delay
-     :rnd random_value}))
+    (Thread/sleep delay)))
 
 (defn do_random_delay
   [delay_min delay_max]
   (if (> delay_max 0)
-    (do_non_zero_random_delay
-     delay_min
-     delay_max
-     {:delay_begin (java.util.Date.)} ;; for tracing
-     )))
+    (do_non_zero_random_delay delay_min delay_max)))
 
 (defn process_one_word_with_delay
   [word outdir levels delay_min delay_max]
@@ -274,10 +265,9 @@
   "Take a set of words related to the main word,
   process each word separately."
   [word_set outdir levels delay_min delay_max]
-  (doall ;; for tracing
-   (map
-    #(process_one_word_with_delay % outdir levels delay_min delay_max)
-    word_set)))
+  (map
+   #(process_one_word_with_delay % outdir levels delay_min delay_max)
+   word_set))
 
 (defn process_words
   [words outdir levels delay_min delay_max]
