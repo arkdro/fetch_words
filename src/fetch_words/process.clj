@@ -1,6 +1,7 @@
 (ns fetch-words.process
   (:require [clojure.string :as str]
             [clojure.data.csv :as csv]
+            [clojure.java.io :as io]
             [clj-http.client :as client]
             [clojure.tools.logging :refer [error warn info]]))
 
@@ -202,9 +203,9 @@
 
 (defn fetch_url
   [url]
-  (let [{body :body status :status} (client/get url)]
+  (let [{:keys [body status length]} (client/get url {:as :byte-array})]
     (if (= status 200)
-      body
+      [body length]
       (warn "no data for url:" url ", status:" status))))
 
 (defn build_directory_and_file_name
@@ -219,17 +220,24 @@
         filename (.getName (java.io.File. server_path))]
     (build_directory_and_file_name filename directory)))
 
+(defn write_data
+  [filename data length]
+  (let [start_offset 0]
+    (with-open
+     [output (io/output-stream filename)]
+      (.write output data start_offset length))))
+
 (defn create_directory_and_save_file
-  [dir filename data]
+  [dir filename data length]
   (create_out_dir dir)
-  (spit filename data))
+  (write_data filename data length))
 
 (defn fetch_and_save_url
   [url directory]
   (let [filename (build_full_filename url directory)
-        data (fetch_url url)]
+        [data length] (fetch_url url)]
     (if (some? data)
-      (create_directory_and_save_file directory filename data))))
+      (create_directory_and_save_file directory filename data length))))
 
 (defn remove_nil_urls
   [urls]
