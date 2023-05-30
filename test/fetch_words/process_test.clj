@@ -48,12 +48,14 @@
   (testing "several words"
     (let [payload "one two three"
           actual (extract_words_from_one_item payload)
-          expected ["one" "two" "three"]]
+          expected {:words ["one" "two" "three"]
+                    :orig "one two three"}]
       (is (= expected actual))))
   (testing "empty string"
     (let [payload ""
           actual (extract_words_from_one_item payload)
-          expected [""]]
+          expected {:words [""]
+                    :orig ""}]
       (is (= expected actual)))))
 
 (deftest process_lines_test
