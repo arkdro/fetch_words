@@ -122,6 +122,11 @@
                    AUDIO_LINK_REGEX_END)]
     audio_url))
 
+(defn extract_autio_url_from_tab
+  [text]
+  (let [info_part (extract_body_part text)]
+    (extract_audio_url info_part)))
+
 (defn parse_multiple_tab_response
   [response]
   (throw (RuntimeException. "not implemented"))
@@ -132,13 +137,7 @@
 
 (defn parse_single_tab_response
   [{body :body}]
-  (throw (RuntimeException. "not implemented"))
-  (let [
-        info_part (extract_body_part body)
-        audio_url (extract_audio_url info_part)
-        ]
-    )
-  )
+  (extract_autio_url_from_tab body))
 
 (defn single_tab?
   [response]
