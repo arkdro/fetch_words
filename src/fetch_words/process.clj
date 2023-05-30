@@ -4,6 +4,7 @@
   )
 
 (def SEPARATOR \,)
+(def QUOTE \')
 (def WORD_INDEX 6)
 (def SPACE_REGEX #"\s+")
 (def BEGINNING_REGEX #"^[^(]+\(")
@@ -35,7 +36,7 @@
 
 (defn extract_one_data_item
   [data]
-  (let [words (first (csv/read-csv data :separator SEPARATOR))]
+  (let [words (first (csv/read-csv data :separator SEPARATOR :quote QUOTE))]
     (get words WORD_INDEX)))
 
 (defn extract_data_items
