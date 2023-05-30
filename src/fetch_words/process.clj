@@ -165,8 +165,9 @@
 
 (defn extract_separated_tabs
   [text]
-  (let [tabs (str/split text TABS_SEPARATOR_REGEX)]
-    (rest tabs)))
+  (some-> text
+          (str/split TABS_SEPARATOR_REGEX)
+          (rest)))
 
 (defn extract_tabs_content
   [body]
