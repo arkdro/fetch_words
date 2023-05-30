@@ -20,6 +20,16 @@
     :parse-fn #(Integer/parseInt %)
     :validate [#(< 0 %)
                "Must be a positive integer"]]
+   ["-i" "--delay-min N" "Min delay to use between requests. Milliseconds."
+    :default 0
+    :parse-fn #(Integer/parseInt %)
+    :validate [#(<= 0 %)
+               "Must be a non-negative integer"]]
+   ["-a" "--delay-max N" "Max delay to use between requests. Milliseconds."
+    :default 0
+    :parse-fn #(Integer/parseInt %)
+    :validate [#(<= 0 %)
+               "Must be a non-negative integer"]]
    ;; A boolean option defaulting to nil
    ["-h" "--help"]])
 
@@ -27,6 +37,12 @@
   []
   ;; (trace/trace-ns 'fetch-words.process)
   )
+
+(defn get_delay_limits
+  [d0 d1]
+  (if (<= d0 d1)
+    [d0 d1]
+    [0 0]))
 
 (defn -main
   "Parse command line arguments and run the generator"
@@ -39,9 +55,18 @@
         outdir (get options :outdir)
         levels (get options :levels)
         errors (get opts :errors)
-        help (get-in opts [:options :help])]
+        help (get-in opts [:options :help])
+        [delay_min delay_max] (get_delay_limits
+                               (get options :delay-min)
+                               (get options :delay-max))]
     (cond
       help (println (get opts :summary))
       errors (println errors)
-      :default (fetch-words.process/process_word_list wordlist outdir levels var_arguments)))
+      :default (fetch-words.process/process_word_list
+                wordlist
+                outdir
+                levels
+                delay_min
+                delay_max
+                var_arguments)))
   (System/exit 0))

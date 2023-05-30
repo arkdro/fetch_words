@@ -238,20 +238,37 @@
   (let [full_out_dir (prepare_out_dir word outdir levels)]
     (fetch_and_save_word word full_out_dir)))
 
+(defn do_non_zero_random_delay
+  [delay_min delay_max]
+  (let [delta (- delay_max delay_min)
+        random_value (rand-int delta)
+        delay (+ delay_min random_value)]
+    (Thread/sleep delay)))
+
+(defn do_random_delay
+  [delay_min delay_max]
+  (if (> delay_max 0)
+    (do_non_zero_random_delay delay_min delay_max)))
+
+(defn process_one_word_with_delay
+  [word outdir levels delay_min delay_max]
+  (do_random_delay delay_min delay_max)
+  (process_one_word word outdir levels))
+
 (defn process_one_word_set
   "Take a set of words related to the main word,
   process each word separately."
-  [word_set outdir levels]
+  [word_set outdir levels delay_min delay_max]
   (map
-   #(process_one_word % outdir levels)
+   #(process_one_word_with_delay % outdir levels delay_min delay_max)
    word_set))
 
 (defn process_words
-  [words outdir levels]
+  [words outdir levels delay_min delay_max]
   (doseq [word_set words]
-    (process_one_word_set word_set outdir levels)))
+    (process_one_word_set word_set outdir levels delay_min delay_max)))
 
 (defn process_word_list
-  [wordlist outdir levels var_arguments]
+  [wordlist outdir levels delay_min delay_max var_arguments]
   (let [words (read_word_list wordlist)]
-    (process_words words outdir levels)))
+    (process_words words outdir levels delay_min delay_max)))
