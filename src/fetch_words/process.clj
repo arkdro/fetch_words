@@ -9,7 +9,7 @@
 
 (defn build_word_groups_of_one_phrase
   "Take a list of words, build a list containing
-  the initial phrase, the main word if it's there, all the separated words"
+  the initial phrase, the main word if it's there and all words separated"
   [words]
   (throw (RuntimeException. "not implemented"))
   (let [
