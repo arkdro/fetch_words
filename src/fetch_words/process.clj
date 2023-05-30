@@ -3,6 +3,7 @@
             [clojure.data.csv :as csv])
   )
 
+(def SEPARATOR \;)
 
 (defn split_words
   [phrase]
@@ -25,6 +26,11 @@
 
 (defn extract_text
   [whole_content]
+(defn extract_one_data_item
+  [data]
+  (let [words (first (csv/read-csv data :separator SEPARATOR))]
+    (get words 6)))
+
   (throw (RuntimeException. "not implemented"))
   )
 
