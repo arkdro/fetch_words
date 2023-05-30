@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.data.csv :as csv]
             [clj-http.client :as client]
-            [clojure.tools.logging :refer [error]]))
+            [clojure.tools.logging :refer [error warn]]))
 
 (def BASE_URL_DWDS "https://www.dwds.de/wb/")
 (def PAYLOAD_SEPARATOR_REGEX #"\x1f")
