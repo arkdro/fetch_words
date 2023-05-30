@@ -10,6 +10,7 @@
   [phrase]
   (throw (RuntimeException. "not implemented"))
   )
+(def SPACE_REGEX #"\s+")
 
 (defn build_word_groups_of_one_phrase
   "Take a phrase, split in words, build a list containing
@@ -54,11 +55,13 @@
   [text]
   (throw (RuntimeException. "not implemented"))
   )
+(defn extract_words_from_one_item
+  [data_item]
+  (str/split data_item SPACE_REGEX))
 
 (defn extract_words_from_items
   [data_items]
-  (throw (RuntimeException. "not implemented"))
-  )
+  (map extract_words_from_one_item data_items))
 
 (defn read_word_list
   [wordlist]
