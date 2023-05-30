@@ -1,8 +1,10 @@
 (ns fetch-words.process
   (:require [clojure.string :as str]
-            [clojure.data.csv :as csv])
-  )
+            [clojure.data.csv :as csv]
+            [clj-http.client :as client]
+            [clojure.tools.logging :refer [error]]))
 
+(def BASE_URL_DWDS "https://www.dwds.de/wb/")
 (def PAYLOAD_SEPARATOR_REGEX #"\x1f")
 (def SEPARATOR \,)
 (def QUOTE \')
@@ -83,11 +85,33 @@
 
 (defn prepare_out_dir
   [word outdir levels]
+  (throw (RuntimeException. "not implemented"))
+  )
+
+(defn fetch_word
+  [word]
+  (try
+    (client/get (str BASE_URL_DWDS word))
+    (catch Exception e
+      (error e "exception for word:" word))))
+
+(defn parse_response
+  [response]
+  (throw (RuntimeException. "not implemented"))
+  ;; handle multiple values (e.g. Kiefer). Check for 'tablist'
+  {:word ""
+   :url ""}
   )
 
 (defn fetch_and_save_word
   [word full_out_dir]
-  )
+  (throw (RuntimeException. "not implemented"))
+  (let [
+        response (fetch_word)
+        data (parse_response response)
+        ]
+    )
+)
 
 (defn process_one_word
   [word outdir levels]
