@@ -4,6 +4,7 @@
             [clojure.java.io :as io]))
 
 (def TEST_DATA_01 "'nie[tra][sound]первпервомerster.first<img src=\"xxx\" />'")
+(def TEST_DATA_LINE_01 "INSERT INTO xxx VALUES(1,'DO',2,3,4,'','in erster Linie[ɪn ˈeːɐ̯stɐ ˈliːni̯ə][sound:xxx.mp3]на первом плане, в первую очередьНа первом плане&nbsp;вам нужно выздороветь.In erster Linie müssen Sie gesund werden.first and foremost<img src=\"xxx.jpg\" />','in erster Linie',5,6,'');")
 
 (defn get_resource
   [name]
@@ -53,4 +54,11 @@
     (let [payload ""
           actual (extract_words_from_one_item payload)
           expected [""]]
+      (is (= expected actual)))))
+
+(deftest process_lines_test
+  (testing "one line"
+    (let [lines [TEST_DATA_LINE_01]
+          actual (process_lines lines)
+          expected [#{"in" "erster" "Linie" "in erster Linie"}]]
       (is (= expected actual)))))
