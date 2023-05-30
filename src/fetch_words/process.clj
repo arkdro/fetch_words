@@ -126,8 +126,7 @@
 
 (defn prepare_out_dir
   [word outdir levels]
-  (let [dir (build_out_dir_name word outdir levels)
-        _ (create_out_dir dir)]
+  (let [dir (build_out_dir_name word outdir levels)]
     dir))
 
 (defn fetch_word
@@ -214,12 +213,17 @@
         filename (.getName (java.io.File. server_path))]
     (build_directory_and_file_name filename directory)))
 
+(defn create_directory_and_save_file
+  [dir filename data]
+  (create_out_dir dir)
+  (spit filename data))
+
 (defn fetch_and_save_url
   [url directory]
   (let [filename (build_full_filename url directory)
         data (fetch_url url)]
     (if (some? data)
-      (spit filename data))))
+      (create_directory_and_save_file directory filename data))))
 
 (defn fetch_and_save_word
   [word directory]
