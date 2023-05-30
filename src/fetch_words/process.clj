@@ -8,9 +8,9 @@
 (def SPACE_REGEX #"\s+")
 
 (defn build_word_groups_of_one_phrase
-  "Take a phrase, split in words, build a list containing
-  the initial phrase, the main word if it's there, the all separated words"
-  [phrase]
+  "Take a list of words, build a list containing
+  the initial phrase, the main word if it's there, all the separated words"
+  [words]
   (throw (RuntimeException. "not implemented"))
   (let [
         ]
