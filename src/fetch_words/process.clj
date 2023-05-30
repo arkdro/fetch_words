@@ -40,6 +40,10 @@
   (let [words (first (csv/read-csv data :separator SEPARATOR))]
     (get words WORD_INDEX)))
 
+(defn extract_data_items
+  [data_items]
+  (map extract_one_data_item data_items))
+
   (throw (RuntimeException. "not implemented"))
   )
 
@@ -52,9 +56,10 @@
   [wordlist]
   (let [
         whole_content (slurp wordlist)
-        text (extract_text whole_content)
-        phrases (extract_initial_phrases text)
-        word_groups (build_word_groups phrases)
+        data_parts (extract_data_from_whole_content whole_content)
+        data_items (extract_data_items data_parts)
+        words (extract_words_from_items data_items)
+        word_groups (build_word_groups words)
         ]
     word_groups)
   )
