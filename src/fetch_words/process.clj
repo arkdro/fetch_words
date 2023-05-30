@@ -167,15 +167,19 @@
     [(parse_single_tab_response response)]
     (parse_multiple_tab_response response)))
 
-(defn fetch_and_save_word
-  [word full_out_dir]
+(defn fetch_and_save_url
+  [url directory]
   (throw (RuntimeException. "not implemented"))
-  (let [
-        response (fetch_word)
-        urls (parse_response response)
-        ]
-    )
-)
+  )
+
+(defn fetch_and_save_word
+  [word directory]
+  (throw (RuntimeException. "not implemented"))
+  (let [response (fetch_word)
+        urls (parse_response response)]
+    (doseq
+        [url urls]
+      (fetch_and_save_url url directory))))
 
 (defn process_one_word
   [word outdir levels]
