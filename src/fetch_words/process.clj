@@ -30,7 +30,7 @@
         without_ending (str/replace-first without_beginning ENDING_REGEX "")]
     without_ending))
 
-(defn extract_data_from_whole_content
+(defn extract_values_from_insertion_lines
   [lines]
   (map extract_data_items_from_sql_line lines))
 
@@ -47,7 +47,7 @@
   [data_item]
   (str/split data_item SPACE_REGEX))
 
-(defn extract_words_from_items
+(defn extract_words_from_payload_items
   [payload_items]
   (map extract_words_from_one_item payload_items))
 
@@ -59,9 +59,9 @@
 
 (defn process_lines
   [lines]
-  (let [data_parts (extract_data_from_whole_content lines)
+  (let [data_parts (extract_values_from_insertion_lines lines)
         payload_items (extract_payload_items data_parts)
-        words (extract_words_from_items payload_items)
+        words (extract_words_from_payload_items payload_items)
         word_groups (build_word_groups words)]
     word_groups))
 
