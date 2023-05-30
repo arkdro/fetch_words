@@ -4,6 +4,7 @@
   )
 
 (def SEPARATOR \;)
+(def WORD_INDEX 6)
 
 (defn split_words
   [phrase]
@@ -29,7 +30,7 @@
 (defn extract_one_data_item
   [data]
   (let [words (first (csv/read-csv data :separator SEPARATOR))]
-    (get words 6)))
+    (get words WORD_INDEX)))
 
   (throw (RuntimeException. "not implemented"))
   )
