@@ -235,11 +235,16 @@
   [urls]
   (filter some? urls))
 
+(defn build_non_nil_urls
+  [word]
+  (some->> word
+           (fetch_word)
+           (parse_response)
+           (remove_nil_urls)))
+
 (defn fetch_and_save_word
   [word directory]
-  (let [response (fetch_word word)
-        urls (parse_response response)
-        non_nil_urls (remove_nil_urls urls)]
+  (let [non_nil_urls (build_non_nil_urls word)]
     (doseq
         [url non_nil_urls]
       (fetch_and_save_url url directory))))
