@@ -25,8 +25,16 @@
   [phrases]
   (map build_word_groups_of_one_phrase phrases))
 
-(defn extract_text
-  [whole_content]
+(defn extract_data_items_from_line
+  [line]
+  (let [without_beginning (str/replace-first line #"^[^(]+\(" "")
+        without_ending (str/replace-first without_beginning #"\)[^)]+$" "")]
+    without_ending))
+
+(defn extract_data_from_whole_content
+  [lines]
+  (map extract_data_items_from_line lines))
+
 (defn extract_one_data_item
   [data]
   (let [words (first (csv/read-csv data :separator SEPARATOR))]
