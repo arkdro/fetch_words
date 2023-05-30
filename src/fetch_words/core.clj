@@ -6,7 +6,7 @@
 
 (def cli-options
   ;; An option with a required argument
-  [["-w" "--wordlist WORDLIST" "a file with the list of words"
+  [["-w" "--wordlist WORDLIST" "a file with 'INSERT INTO notes VALUES' lines."
     :validate [#(and
                  (some? %)
                  (string? %))
@@ -16,7 +16,8 @@
                  (some? %)
                  (string? %))
                "Must be non-empty string"]]
-   ["-l" "--levels N" "create N levels of output directories. Default: round(log10(wordlist size))"
+   ["-l" "--levels N" "create up to N levels of output sub-directories."
+    :default 4
     :parse-fn #(Integer/parseInt %)
     :validate [#(< 0 %)
                "Must be a positive integer"]]
