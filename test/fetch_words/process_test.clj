@@ -64,3 +64,41 @@
           actual (process_lines lines)
           expected [#{"in" "erster" "Linie" "in erster Linie"}]]
       (is (= expected actual)))))
+
+(deftest split_word_into_parts_test
+  (testing "Long word, 3 parts"
+    (let [word "Verständnis"
+          max_parts 3
+          actual (split_word_into_parts word max_parts)
+          expected ["Ve" "rs" "tändnis"]]
+      (is (= expected actual))))
+  (testing "Long word, 1 part"
+    (let [word "Verständnis"
+          max_parts 1
+          actual (split_word_into_parts word max_parts)
+          expected ["Verständnis"]]
+      (is (= expected actual))))
+  (testing "Medium word, 3 parts"
+    (let [word "Müller"
+          max_parts 3
+          actual (split_word_into_parts word max_parts)
+          expected ["Mü" "ll" "er"]]
+      (is (= expected actual))))
+  (testing "Short word, 3 parts"
+    (let [word "Mühe"
+          max_parts 3
+          actual (split_word_into_parts word max_parts)
+          expected ["Mü" "he"]]
+      (is (= expected actual))))
+  (testing "Short word, 2 parts"
+    (let [word "Hüb"
+          max_parts 2
+          actual (split_word_into_parts word max_parts)
+          expected ["Hü" "b"]]
+      (is (= expected actual))))
+  (testing "Short word, 1 part"
+    (let [word "Hüb"
+          max_parts 1
+          actual (split_word_into_parts word max_parts)
+          expected ["Hüb"]]
+      (is (= expected actual)))))
