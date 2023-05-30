@@ -12,15 +12,15 @@
 (def SPACE_REGEX #"\s+")
 (def BEGINNING_REGEX #"^[^(]+\(")
 (def ENDING_REGEX #"\)[^)]+$")
-(def BEGIN_BODY_BLOCK #"<[^<>]+\bclass=\"dwdswb-artikel\"[^<>]*>")
-(def END_BODY_BLOCK #"<[^<>]+\bid=\"relation-block[^<>]+>")
-(def BEGIN_AUDIO #"<audio>")
-(def END_AUDIO #"</audio>")
-(def AUDIO_TAG_REGEX #"<source\b[^<>]+\btype=\"audio\b[^<>]+>")
+(def BEGIN_BODY_BLOCK #"(?i)<[^<>]+\bclass=\"dwdswb-artikel\"[^<>]*>")
+(def END_BODY_BLOCK #"(?i)<[^<>]+\bid=\"relation-block[^<>]+>")
+(def BEGIN_AUDIO #"(?i)<audio>")
+(def END_AUDIO #"(?i)</audio>")
+(def AUDIO_TAG_REGEX #"(?i)<source\b[^<>]+\btype=\"audio\b[^<>]+>")
 (def AUDIO_LINK_REGEX #"(?i)\bSRC=\"([^<>\"]+)\"")
-(def TABS_SEPARATOR_REGEX #"<div[^<>]+\bid=\"start-\d+\"[^<>]*>")
-(def TABS_BEGIN_REGEX #"<main>")
-(def TABS_END_REGEX #"</main>")
+(def TABS_SEPARATOR_REGEX #"(?i)<div[^<>]+\bid=\"start-\d+\"[^<>]*>")
+(def TABS_BEGIN_REGEX #"(?i)<main>")
+(def TABS_END_REGEX #"(?i)</main>")
 
 (defn build_word_groups_of_one_phrase
   "Currently no word groups. Only the original words and the whole sentence."
