@@ -1,8 +1,7 @@
 (ns fetch-words.process-test
   (:require [clojure.test :refer :all]
             [fetch-words.process :refer :all]
-            [clojure.java.io :as io]
-            ))
+            [clojure.java.io :as io]))
 
 (def TEST_DATA_01 "'nie[tra][sound]первпервомerster.first<img src=\"xxx\" />'")
 
