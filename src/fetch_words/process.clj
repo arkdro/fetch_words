@@ -5,11 +5,6 @@
 
 (def SEPARATOR \;)
 (def WORD_INDEX 6)
-
-(defn split_words
-  [phrase]
-  (throw (RuntimeException. "not implemented"))
-  )
 (def SPACE_REGEX #"\s+")
 
 (defn build_word_groups_of_one_phrase
@@ -18,7 +13,6 @@
   [phrase]
   (throw (RuntimeException. "not implemented"))
   (let [
-        words (split_words phrase)
         ]
     )
   )
@@ -46,15 +40,6 @@
   [data_items]
   (map extract_one_data_item data_items))
 
-(defn extract_word_from_item
-  [data_items]
-  (throw (RuntimeException. "not implemented"))
-  )
-
-(defn extract_initial_phrases
-  [text]
-  (throw (RuntimeException. "not implemented"))
-  )
 (defn extract_words_from_one_item
   [data_item]
   (str/split data_item SPACE_REGEX))
