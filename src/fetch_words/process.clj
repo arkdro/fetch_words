@@ -24,6 +24,8 @@
 (def TABS_END_REGEX #"(?i)</main>")
 (def ONE_LEVEL_CHAR_REGEX  #"(..?)(.*)") ;; take 2 chars if possible and take the rest
 
+(def TIMEOUT 5000)
+
 (defn build_word_groups_of_one_phrase
   "Currently no word groups. Only the original words and the whole sentence."
   [{:keys [words orig]}]
@@ -132,7 +134,9 @@
 (defn fetch_word
   [word]
   (try
-    (client/get (str BASE_URL_DWDS word))
+    (client/get
+     (str BASE_URL_DWDS word)
+     {:socket-timeout TIMEOUT :connection-timeout TIMEOUT})
     (catch Exception e
       (error e "exception for word:" word))))
 
