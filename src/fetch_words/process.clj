@@ -57,17 +57,19 @@
        slurp
        str/split-lines))
 
-(defn read_word_list
-  [wordlist]
-  (let [
-        lines (get_lines wordlist)
-        data_parts (extract_data_from_whole_content lines)
+(defn process_lines
+  [lines]
+  (let [data_parts (extract_data_from_whole_content lines)
         payload_items (extract_payload_items data_parts)
         words (extract_words_from_items payload_items)
-        word_groups (build_word_groups words)
-        ]
-    word_groups)
-  )
+        word_groups (build_word_groups words)]
+    word_groups))
+
+(defn read_word_list
+  [wordlist]
+  (let [lines (get_lines wordlist)
+        word_groups (process_lines lines)]
+    word_groups))
 
 (defn prepare_out_dir
   [word outdir levels]
