@@ -234,6 +234,7 @@
 
 (defn fetch_and_save_url
   [url directory]
+  (info "url:" url)
   (let [filename (build_full_filename url directory)
         [data length] (fetch_url url)]
     (if (some? data)
