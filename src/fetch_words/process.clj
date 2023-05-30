@@ -167,14 +167,28 @@
     [(parse_single_tab_response response)]
     (parse_multiple_tab_response response)))
 
+(defn fetch_url
+  [url]
+  (let [{body :body status :status} (client/get url)]
+    (if (= status 200)
+      body
+      (warn "no data for url:" url ", status:" status))))
+
+(defn build_full_filename
+  [url directory]
+  (let [server_path (.getPath (java.net.URL. url))
+        filename (.getName (java.io.File. server_path))]
+    (.getPath (java.io.File. directory filename))))
+
 (defn fetch_and_save_url
   [url directory]
-  (throw (RuntimeException. "not implemented"))
-  )
+  (let [filename (build_full_filename url directory)
+        data (fetch_url url)]
+    (if (some? data)
+      (spit filename data))))
 
 (defn fetch_and_save_word
   [word directory]
-  (throw (RuntimeException. "not implemented"))
   (let [response (fetch_word)
         urls (parse_response response)]
     (doseq
