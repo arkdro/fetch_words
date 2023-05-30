@@ -266,9 +266,10 @@
   "Take a set of words related to the main word,
   process each word separately."
   [word_set outdir levels delay_min delay_max]
-  (map
-   #(process_one_word_with_delay % outdir levels delay_min delay_max)
-   word_set))
+  (doall
+   (map
+    #(process_one_word_with_delay % outdir levels delay_min delay_max)
+    word_set)))
 
 (defn process_words
   [words outdir levels delay_min delay_max]
