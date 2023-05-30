@@ -253,9 +253,10 @@
 
 (defn fetch_and_save_word
   [word directory]
-  (let [non_nil_urls (build_non_nil_urls word)]
+  (let [non_nil_urls (build_non_nil_urls word)
+        deduplicated (into #{} non_nil_urls)]
     (doseq
-        [url non_nil_urls]
+        [url deduplicated]
       (fetch_and_save_url url directory))))
 
 (defn process_one_word
