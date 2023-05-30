@@ -3,6 +3,7 @@
             [clojure.data.csv :as csv])
   )
 
+(def PAYLOAD_SEPARATOR_REGEX #"\x1f")
 (def SEPARATOR \,)
 (def QUOTE \')
 (def WORD_INDEX 6)
@@ -40,6 +41,15 @@
   [data_items]
   (map extract_payload data_items))
 
+(defn extract_useful_payload
+  [payload]
+  (let [parts (str/split payload PAYLOAD_SEPARATOR_REGEX)]
+    (first parts)))
+
+(defn extract_useful_payload_items
+  [payload_items]
+  (map extract_useful_payload payload_items))
+
 (defn extract_words_from_one_item
   [data_item]
   (let [words (str/split data_item SPACE_REGEX)]
@@ -60,7 +70,8 @@
   [lines]
   (let [data_parts (extract_values_from_insertion_lines lines)
         payload_items (extract_payload_items data_parts)
-        words (extract_words_from_payload_items payload_items)
+        useful_payload_items (extract_useful_payload_items payload_items)
+        words (extract_words_from_payload_items useful_payload_items)
         word_groups (build_word_groups words)]
     word_groups))
 
