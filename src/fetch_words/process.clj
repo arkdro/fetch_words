@@ -162,12 +162,12 @@
     (extract_separated_tabs all_tabs_content)))
 
 (defn parse_multiple_tab_response
-  [{body :body}]
+  [body]
   (let [tabs (extract_tabs_content body)]
     (extract_audio_urls tabs)))
 
 (defn parse_single_tab_response
-  [{body :body}]
+  [body]
   (extract_audio_url_from_tab body))
 
 (defn single_tab?
@@ -175,10 +175,10 @@
   (re-find TABS_REGEX body))
 
 (defn parse_response
-  [response]
-  (if (single_tab? response)
-    [(parse_single_tab_response response)]
-    (parse_multiple_tab_response response)))
+  [{body :body}]
+  (if (single_tab? body)
+    [(parse_single_tab_response body)]
+    (parse_multiple_tab_response body)))
 
 (defn fetch_url
   [url]
