@@ -184,15 +184,15 @@
   [body]
   (extract_audio_url_from_tab body))
 
-(defn single_tab?
+(defn multiple_tabs?
   [body]
   (re-find TABS_REGEX body))
 
 (defn parse_response
   [{body :body}]
-  (if (single_tab? body)
-    [(parse_single_tab_response body)]
-    (parse_multiple_tab_response body)))
+  (if (multiple_tabs? body)
+    (parse_multiple_tab_response body)
+    [(parse_single_tab_response body)]))
 
 (defn fetch_url
   [url]
