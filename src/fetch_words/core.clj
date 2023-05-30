@@ -68,6 +68,5 @@
                 outdir
                 levels
                 delay_min
-                delay_max
-                var_arguments)))
+                delay_max)))
   (System/exit 0))

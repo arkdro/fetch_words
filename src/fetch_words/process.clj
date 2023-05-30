@@ -267,26 +267,35 @@
     (do_non_zero_random_delay delay_min delay_max)))
 
 (defn process_one_word_with_delay
-  [word outdir levels delay_min delay_max]
-  (info "word:" word)
-  (do_random_delay delay_min delay_max)
-  (process_one_word word outdir levels))
+  [word outdir levels delay_min delay_max completed_words]
+  (if (contains? completed_words word)
+    (do
+      (info "existing word:" word)
+      completed_words)
+    (do
+      (info "new word:" word)
+      (do_random_delay delay_min delay_max)
+      (process_one_word word outdir levels)
+      (conj completed_words word))))
 
 (defn process_one_word_set
   "Take a set of words related to the main word,
   process each word separately."
-  [word_set outdir levels delay_min delay_max]
-  (doall
-   (map
-    #(process_one_word_with_delay % outdir levels delay_min delay_max)
-    word_set)))
+  [word_set outdir levels delay_min delay_max completed_words]
+  (reduce
+   #(process_one_word_with_delay %2 outdir levels delay_min delay_max %1)
+   completed_words
+   word_set))
 
 (defn process_words
-  [words outdir levels delay_min delay_max]
-  (doseq [word_set words]
-    (process_one_word_set word_set outdir levels delay_min delay_max)))
+  [words outdir levels delay_min delay_max completed_words]
+  (reduce
+   #(process_one_word_set %2 outdir levels delay_min delay_max %1)
+   completed_words
+   words))
 
 (defn process_word_list
-  [wordlist outdir levels delay_min delay_max var_arguments]
-  (let [words (read_word_list wordlist)]
-    (process_words words outdir levels delay_min delay_max)))
+  [wordlist outdir levels delay_min delay_max]
+  (let [words (read_word_list wordlist)
+        completed_words #{}]
+    (process_words words outdir levels delay_min delay_max completed_words)))
