@@ -122,7 +122,7 @@
                    AUDIO_LINK_REGEX_END)]
     audio_url))
 
-(defn extract_autio_url_from_tab
+(defn extract_audio_url_from_tab
   [text]
   (let [info_part (extract_body_part text)]
     (extract_audio_url info_part)))
@@ -137,7 +137,7 @@
 
 (defn parse_single_tab_response
   [{body :body}]
-  (extract_autio_url_from_tab body))
+  (extract_audio_url_from_tab body))
 
 (defn single_tab?
   [response]
