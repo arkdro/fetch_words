@@ -18,6 +18,7 @@
 (def END_AUDIO #"(?i)</audio>")
 (def AUDIO_TAG_REGEX #"(?i)<source\b[^<>]+\btype=\"audio\b[^<>]+>")
 (def AUDIO_LINK_REGEX #"(?i)\bSRC=\"([^<>\"]+)\"")
+(def TABS_REGEX #"(?i)\bid=\"dwdswb-tabs\"")
 (def TABS_SEPARATOR_REGEX #"(?i)<div[^<>]+\bid=\"start-\d+\"[^<>]*>")
 (def TABS_BEGIN_REGEX #"(?i)<main>")
 (def TABS_END_REGEX #"(?i)</main>")
@@ -170,9 +171,8 @@
   (extract_audio_url_from_tab body))
 
 (defn single_tab?
-  [response]
-  (throw (RuntimeException. "not implemented"))
-  )
+  [body]
+  (re-find TABS_REGEX body))
 
 (defn parse_response
   [response]
