@@ -202,7 +202,7 @@
 
 (defn fetch_and_save_word
   [word directory]
-  (let [response (fetch_word)
+  (let [response (fetch_word word)
         urls (parse_response response)]
     (doseq
         [url urls]
