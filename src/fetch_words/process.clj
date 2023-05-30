@@ -11,14 +11,11 @@
 (def ENDING_REGEX #"\)[^)]+$")
 
 (defn build_word_groups_of_one_phrase
-  "Take a list of words, build a list containing
-  the initial phrase, the main word if it's there and all words separated"
-  [words]
-  (throw (RuntimeException. "not implemented"))
-  (let [
-        ]
-    )
-  )
+  "Currently no word groups. Only the original words and the whole sentence."
+  [{:keys [words orig]}]
+  (conj
+   (into #{} words)
+   orig))
 
 (defn build_word_groups
   [phrases]
