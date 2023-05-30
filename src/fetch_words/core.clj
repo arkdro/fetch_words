@@ -1,4 +1,5 @@
 (ns fetch-words.core
+  (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
             ;; [clojure.tools.trace :as trace]
             [fetch-words.process]))

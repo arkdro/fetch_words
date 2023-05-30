@@ -13,5 +13,6 @@
   :main ^:skip-aot fetch-words.core
   :repl-options {:init-ns fetch-words.core}
   :jvm-opts ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"]
-  :profiles {:dev {:resource-paths ["test/resources"]
+  :profiles {:uberjar {:aot :all}
+             :dev {:resource-paths ["test/resources"]
                    :dependencies []}})
