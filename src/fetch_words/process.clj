@@ -107,9 +107,12 @@
                 (recur new_acc end (dec max_parts))))))
 
 (defn prepare_out_dir
+  "Split a word into parts, join the base dir and the parts
+  to build a deep nested directory name."
   [word outdir levels]
-  (throw (RuntimeException. "not implemented"))
-  )
+  (let [parts (split_word_into_parts word levels)
+        var_arg_parts (into-array java.lang.String parts)]
+    (java.nio.file.Paths/get outdir var_arg_parts)))
 
 (defn fetch_word
   [word]
