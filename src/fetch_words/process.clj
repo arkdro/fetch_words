@@ -45,7 +45,9 @@
 
 (defn extract_words_from_one_item
   [data_item]
-  (str/split data_item SPACE_REGEX))
+  (let [words (str/split data_item SPACE_REGEX)]
+    {:words words
+     :orig data_item}))
 
 (defn extract_words_from_payload_items
   [payload_items]
