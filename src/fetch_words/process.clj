@@ -164,7 +164,7 @@
 (defn parse_response
   [response]
   (if (single_tab? response)
-    (parse_single_tab_response response)
+    [(parse_single_tab_response response)]
     (parse_multiple_tab_response response)))
 
 (defn fetch_and_save_word
