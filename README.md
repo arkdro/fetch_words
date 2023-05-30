@@ -1,10 +1,35 @@
 # fetch_words
 
-A Clojure library designed to ... well, that part is up to you.
+- take an input file
+- extract words of the original language
+- for every word
+  - fetch an audio file
+  - create a sub-directory based on the number of levels.
+  - save the audio file to the output sub-directory
 
 ## Usage
 
-FIXME
+```
+lein run -- -w data.txt -o /tmp/out -l 3 -i 200 -a 1000
+```
+
+### Parameters
+
+`-w` - file with input data.
+       It is a `sqlite` dump file with `INSERT INTO notes VALUES` lines.
+
+`-o` - base output directory
+
+`-l` - upper limit of how many sub-directory levels to create.
+       Creating sub-directories uses 2 characters per level.
+       E.g. the word `catalog` and `--levels=3` results in `ca/ta/log`
+
+`-i` - minimum delay in milliseconds
+
+`-a` - maximum delay in milliseconds
+
+If delay parameters are used, then the total delay is randomized in the interval
+`[min ... max)`
 
 ## License
 
