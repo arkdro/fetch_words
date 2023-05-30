@@ -172,7 +172,7 @@
   (throw (RuntimeException. "not implemented"))
   (let [
         response (fetch_word)
-        data (parse_response response)
+        urls (parse_response response)
         ]
     )
 )
