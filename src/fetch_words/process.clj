@@ -3,7 +3,7 @@
             [clojure.data.csv :as csv])
   )
 
-(def SEPARATOR \;)
+(def SEPARATOR \,)
 (def WORD_INDEX 6)
 (def SPACE_REGEX #"\s+")
 (def BEGINNING_REGEX #"^[^(]+\(")
