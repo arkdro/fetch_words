@@ -27,6 +27,7 @@
 (def MULTI_AUDIO_BEGIN_REGEX #"(?i)dwdswb-ft-blocklabel\b[^<>]*>Aussprache\b[^<>]*<")
 (def MULTI_AUDIO_END_REGEX #"(?i)dwdswb-ft-blocklabel\b[^<>]*>[^<>]+<")
 (def MULTI_AUDIO_SEPARATOR_REGEX #"(?i)\bglyphicon-volume-up\b")
+(def UNQUOTE_REGEX #"(?i)&nbsp;")
 
 (def TIMEOUT 5000)
 
@@ -73,9 +74,14 @@
   [payload_items]
   (map extract_useful_payload payload_items))
 
+(defn unquote
+  [text]
+  (str/replace text UNQUOTE_REGEX ""))
+
 (defn extract_words_from_one_item
   [data_item]
-  (let [words (str/split data_item SPACE_REGEX)]
+  (let [unquoted (unquote data_item)
+        words (str/split unquoted SPACE_REGEX)]
     {:words words
      :orig data_item}))
 
