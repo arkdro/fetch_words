@@ -264,7 +264,7 @@
   [urls]
   (filter some? urls))
 
-(defn build_non_nil_urls
+(defn fetch_non_nil_urls
   [word]
   (some->> word
            (fetch_word)
@@ -273,7 +273,7 @@
 
 (defn fetch_and_save_word
   [word directory]
-  (let [non_nil_urls (build_non_nil_urls word)
+  (let [non_nil_urls (fetch_non_nil_urls word)
         deduplicated (into #{} non_nil_urls)]
     (doseq
         [url deduplicated]
