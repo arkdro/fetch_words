@@ -24,6 +24,9 @@
 (def TABS_BEGIN_REGEX #"(?i)<main>")
 (def TABS_END_REGEX #"(?i)</main>")
 (def ONE_LEVEL_CHAR_REGEX  #"(..?)(.*)") ;; take 2 chars if possible and take the rest
+(def MULTI_AUDIO_BEGIN_REGEX #"(?i)dwdswb-ft-blocklabel\b[^<>]*>Aussprache\b[^<>]*<")
+(def MULTI_AUDIO_END_REGEX #"(?i)dwdswb-ft-blocklabel\b[^<>]*>[^<>]+<")
+(def MULTI_AUDIO_SEPARATOR_REGEX #"(?i)\bglyphicon-volume-up\b")
 
 (def TIMEOUT 5000)
 
@@ -182,6 +185,15 @@
                           body)]
     (extract_separated_tabs all_tabs_content)))
 
+(defn parse_multiple_url_response
+  [body]
+  (let [audio_whole (extract_by_begin_and_end_regex
+                     MULTI_AUDIO_BEGIN_REGEX
+                     MULTI_AUDIO_END_REGEX
+                     body)
+        audio_parts (str/split audio_whole MULTI_AUDIO_SEPARATOR_REGEX)]
+    (extract_audio_urls audio_parts)))
+
 (defn parse_multiple_tab_response
   [body]
   (let [tabs (extract_tabs_content body)]
@@ -191,15 +203,23 @@
   [body]
   (extract_audio_url_from_tab body))
 
+(defn multiple_urls?
+  [body]
+  (let [audio_part (extract_by_begin_and_end_regex
+                    MULTI_AUDIO_BEGIN_REGEX
+                    MULTI_AUDIO_END_REGEX
+                    body)]
+    (some? audio_part)))
+
 (defn multiple_tabs?
   [body]
   (re-find TABS_REGEX body))
 
 (defn parse_response
   [{body :body}]
-  (if (multiple_tabs? body)
-    (parse_multiple_tab_response body)
-    [(parse_single_tab_response body)]))
+  (cond (multiple_tabs? body) (parse_multiple_tab_response body)
+        (multiple_urls? body) (parse_multiple_url_response body)
+        :else [(parse_single_tab_response body)]))
 
 (defn fetch_url
   [url]
